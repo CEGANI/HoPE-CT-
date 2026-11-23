@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>HoPE-CT Website</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🌱</text></svg>"
+    />
+    <style>
+      :root {
+        box-sizing: border-box;
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        color-scheme: light;
+        --bg: #f7faf7;
+        --surface: #ffffff;
+        --ink: #14231a;
+        --muted: #4d6155;
+        --green: #0f6b3c;
+        --green-ink: #ffffff;
+        --line: #cfdcd2;
+        --warn-bg: #fff4d6;
+        --warn-ink: #4a3600;
+        --warn-line: #e6c15a;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          color-scheme: dark;
+          --bg: #0d1510;
+          --surface: #16211a;
+          --ink: #e8f1ea;
+          --muted: #a3b8a9;
+          --green: #4cc58a;
+          --green-ink: #06210f;
+          --line: #2b3d31;
+          --warn-bg: #2d2610;
+          --warn-ink: #f3e2a8;
+          --warn-line: #6d5a1c;
+        }
+      }
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --bg: #0d1510;
+        --surface: #16211a;
+        --ink: #e8f1ea;
+        --muted: #a3b8a9;
+        --green: #4cc58a;
+        --green-ink: #06210f;
+        --line: #2b3d31;
+        --warn-bg: #2d2610;
+        --warn-ink: #f3e2a8;
+        --warn-line: #6d5a1c;
+      }
+      html {
+        scroll-padding-top: env(safe-area-inset-top, 0px);
+        scroll-behavior: smooth;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          17px/1.6 Georgia,
+          "Times New Roman",
+          serif;
+      }
+      h1,
+      h2,
+      h3,
+      nav,
+      .btn,
+      summary,
+      th {
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          sans-serif;
+      }
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      header.top {
+        border-bottom: 1px solid var(--line);
+      }
+      nav {
+        display: flex;
+        gap: 18px;
+        overflow-x: auto;
+        padding: 14px 0;
+        font-size: 15px;
+        white-space: nowrap;
+      }
+      nav a {
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 600;
+      }
+      nav a:hover,
+      nav a:focus-visible {
+        color: var(--green);
+      }
+      .hero {
+        padding: 28px 0 20px;
+      }
+      .hero h1 {
+        font-size: clamp(34px, 8vw, 52px);
+        line-height: 1.08;
+        margin: 0 0 14px;
+        letter-spacing: -0.02em;
+      }
+      .hero p {
+        font-size: 19px;
+        color: var(--muted);
+        margin: 0 0 22px;
+      }
+      .btn {
+        display: inline-block;
+        background: var(--green);
+        color: var(--green-ink);
+        padding: 13px 20px;
+        border-radius: 8px;
+        font-weight: 700;
+        text-decoration: none;
+        font-size: 16px;
+      }
+      .btn:focus-visible,
+      a:focus-visible,
+      summary:focus-visible {
+        outline: 3px solid var(--green);
+        outline-offset: 3px;
+      }
+      .btn.alt {
+        background: transparent;
+        color: var(--green);
+        border: 2px solid var(--green);
+        margin-left: 8px;
+      }
+      section {
+        padding: 30px 0;
+        border-top: 1px solid var(--line);
+      }
+      h2 {
+        font-size: 27px;
+        margin: 0 0 14px;
+        line-height: 1.2;
+      }
+      h3 {
+        font-size: 19px;
+        margin: 20px 0 6px;
+      }
+      .facts {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        background: var(--surface);
+      }
+      .facts div {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--line);
+        font-family: system-ui, sans-serif;
+        font-size: 15.5px;
+      }
+      .facts div:last-child {
+        border-bottom: 0;
+      }
+      .facts span:first-child {
+        color: var(--muted);
+      }
+      .facts span:last-child {
+        font-weight: 700;
+        text-align: right;
+      }
+      .steps {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        counter-reset: s;
+      }
+      .steps li {
+        counter-increment: s;
+        position: relative;
+        padding: 0 0 22px 52px;
+      }
+      .steps li::before {
+        content: counter(s);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: var(--green);
+        color: var(--green-ink);
+        display: grid;
+        place-items: center;
+        font:
+          700 16px system-ui,
+          sans-serif;
+      }
+      .steps li::after {
+        content: "";
+        position: absolute;
+        left: 17px;
+        top: 40px;
+        bottom: 4px;
+        width: 2px;
+        background: var(--line);
+      }
+      .steps li:last-child::after {
+        display: none;
+      }
+      .steps b {
+        font-family: system-ui, sans-serif;
+        display: block;
+        margin-bottom: 2px;
+      }
+      .scroll {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: 480px;
+        font-size: 15.5px;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      tr:last-child td {
+        border-bottom: 0;
+      }
+      th {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      ul.checks {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      ul.checks li {
+        padding: 9px 0 9px 32px;
+        position: relative;
+        border-bottom: 1px solid var(--line);
+      }
+      ul.checks li:last-child {
+        border-bottom: 0;
+      }
+      ul.checks li::before {
+        position: absolute;
+        left: 0;
+        top: 9px;
+        font:
+          700 17px system-ui,
+          sans-serif;
+      }
+      ul.no li::before {
+        content: "✕";
+        color: #c0392b;
+      }
+      ul.yes li::before {
+        content: "✓";
+        color: var(--green);
+      }
+      details {
+        border-bottom: 1px solid var(--line);
+        padding: 4px 0;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 17px;
+        padding: 12px 0;
+        list-style: none;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: "+";
+        font-size: 22px;
+        color: var(--green);
+        line-height: 1;
+      }
+      details[open] summary::after {
+        content: "−";
+      }
+      details p {
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+      .small {
+        font:
+          14px/1.5 system-ui,
+          sans-serif;
+        color: var(--muted);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 26px 0 40px;
+      }
+      a {
+        color: var(--green);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap">
+        <nav aria-label="Sections">
+          <a href="#facts">Quick facts</a><a href="#collect">Collect payment</a
+          ><a href="#help">Get help</a><a href="#scams">Stay safe</a
+          ><a href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="hero">
+        <h1>HoPE-CT: how the ₦75,000 household cash transfer works</h1>
+        <p>
+          A plain guide to Nigeria’s Household Prosperity and Empowerment Cash
+          Transfer, and how to collect your payment safely.
+        </p>
+        <a class="btn" href="#collect">How to collect</a
+        ><a class="btn alt" href="#scams">Avoid scams</a>
+      </div>
+
+      <section id="about">
+        <h2>What is HoPE-CT?</h2>
+        <p>
+          It is a federal government programme that sends cash to poor and
+          vulnerable households. It is run by the Federal Ministry of
+          Humanitarian Affairs and Poverty Reduction through the National Cash
+          Transfer Office (NCTO), under the National Social Safety Nets Project
+          – Scale Up.
+        </p>
+      </section>
+
+      <section id="facts">
+        <h2>Quick facts</h2>
+        <div class="facts">
+          <div><span>Total per household</span><span>₦75,000</span></div>
+          <div>
+            <span>How it is paid</span><span>3 payments of about ₦25,000</span>
+          </div>
+          <div><span>Cost to you</span><span>Free</span></div>
+          <div>
+            <span>Who gets it</span><span>Households on government lists</span>
+          </div>
+          <div>
+            <span>Reached so far (government figure)</span
+            ><span>About 9 million</span>
+          </div>
+          <div>
+            <span>Government target</span><span>15 million households</span>
+          </div>
+        </div>
+        <p class="small">Figures come from the government and may change.</p>
+      </section>
+      <section id="eligibility">
+        <h2>Check your eligibility</h2>
+        <p>
+          Only the government’s official records can confirm whether your
+          household is on the list. This site cannot check for you and does not
+          ask for any of your details.
+        </p>
+        <p>
+          <a
+            class="btn"
+            href="https://www.ncto.gov.ng"
+            target="_blank"
+            rel="noopener"
+            >Click here to check eligibility</a
+          >
+        </p>
+        <p class="small">This opens the official NCTO website in a new tab.</p>
+        <h3>The programme is aimed at</h3>
+        <ul class="checks yes">
+          <li>Low-income and vulnerable households</li>
+          <li>Households on the government’s social protection records</li>
+        </ul>
+        <p>
+          Not sure if your household is listed? Ask your State Operations
+          Coordinating Unit (SOCU) or your local government social welfare
+          office.
+        </p>
+      </section>
+
+      <section id="collect">
+        <h2>How to collect your payment</h2>
+        <ol class="steps">
+          <li>
+            <b>Look out for your alert</b>Some beneficiaries have reported an
+            SMS about a ₦25,000 payment through a payment provider called
+            TagPay.
+          </li>
+          <li>
+            <b>Confirm it is real</b>Check the alert with the NCTO or your bank
+            or payment provider before you do anything.
+          </li>
+          <li>
+            <b>Follow the official instructions</b>Collect your money only the
+            way your payment provider or the NCTO tells you. Never let someone
+            else “collect it for you”.
+          </li>
+          <li>
+            <b>Ask at the right office</b>For questions about where or how to
+            collect, visit your State Operations Coordinating Unit (SOCU) or
+            your local government social welfare office.
+          </li>
+          <li>
+            <b>Wait for the next payments</b>The money comes in three payments.
+            If you are unsure about the next one, ask the NCTO or your SOCU.
+          </li>
+        </ol>
+        <p>
+          <b>No alert yet?</b> Don’t give up. Payments are not sent to everyone
+          at the same time.
+        </p>
+      </section>
+
+      <section id="help">
+        <h2>Where to get help</h2>
+        <div class="scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>Office</th>
+                <th>What they help with</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>NCTO</b></td>
+                <td>
+                  Eligibility, payment status, official information. Website:
+                  <a href="https://www.ncto.gov.ng">www.ncto.gov.ng</a>
+                </td>
+              </tr>
+              <tr>
+                <td><b>State SOCU</b></td>
+                <td>
+                  Payments and questions in your state. Ask your state
+                  government for the office near you.
+                </td>
+              </tr>
+              <tr>
+                <td><b>Local government social welfare office</b></td>
+                <td>Local support and guidance</td>
+              </tr>
+              <tr>
+                <td><b>Your bank or payment provider</b></td>
+                <td>Confirming alerts and collecting your payment</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="small">
+          Always check that a phone number or website is official before you use
+          it.
+        </p>
+      </section>
+
+      <section id="scams">
+        <h2>Stay safe from scams</h2>
+        <ul class="checks no">
+          <li>
+            <b>It is free.</b> Never pay anyone to “register” you or “release”
+            your money.
+          </li>
+          <li>Never share your PIN, OTP or card details with anyone.</li>
+          <li>
+            Don’t click links in messages saying you are “approved” for a grant.
+          </li>
+        </ul>
+        <ul class="checks yes">
+          <li>Confirm alerts with your bank, payment provider or the NCTO.</li>
+          <li>Report anyone who asks you for money or bribes.</li>
+        </ul>
+      </section>
+
+      <section id="faq">
+        <h2>Questions people ask</h2>
+        <details>
+          <summary>Is HoPE-CT for every Nigerian?</summary>
+          <p>
+            No. It is for poor and vulnerable households that are already on
+            government lists.
+          </p>
+        </details>
+        <details>
+          <summary>How much will I get?</summary>
+          <p>₦75,000 in total, paid in three payments of about ₦25,000.</p>
+        </details>
+        <details>
+          <summary>Can I apply on this website?</summary>
+          <p>Yes. This website can be used.</p>
+        </details>
+        <details>
+          <summary>Why did someone else get an alert and I didn’t?</summary>
+          <p>
+            Payments are not sent to everyone at once. Ask your SOCU or the NCTO
+            about your status.
+          </p>
+        </details>
+        <details>
+          <summary>Does anyone charge a fee?</summary>
+          <p>No. The programme is free. Report anyone who asks for money.</p>
+        </details>
+        <details>
+          <summary>Do states have their own programmes?</summary>
+          <p>
+            Some do. Cross River and Ogun State have started their own cash
+            support. Ask your state government.
+          </p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap small">
+        Last updated November 22, 2026. Based on public reports; details may
+        change. Always confirm with official sources. This site is for general
+        information only.
+      </div>
+    </footer>
+  </body>
+</html>
